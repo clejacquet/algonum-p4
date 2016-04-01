@@ -1,9 +1,9 @@
 # coding: utf-8
 import numpy as np
 
-## Newton-Raphson Method
 
-def Newton_Raphson(f,H,U0,N,epsilon):
+# Newton-Raphson Method
+def Newton_Raphson(f, H, U0, N, epsilon):
     U=U0
     V=np.linalg.lstsq(H(U),-f(U))[0] #function resolving Ax=B
     UplusV=U+V
@@ -15,6 +15,7 @@ def Newton_Raphson(f,H,U0,N,epsilon):
         i+=1
     return UplusV
 
+
 def main():
     functionU=Newton_Raphson(lambda A: np.array([A[0]*A[0]-2,A[1]*A[1]-3]),lambda A:  np.array([[(2*A[0]), 0], [0, (2*A[1])]]),np.array([1, 1]),100,0.0001)
     
@@ -24,6 +25,5 @@ def main():
     print("")
     print("Solution we get :")
     print(functionU)
+
 main()
-    
-    
