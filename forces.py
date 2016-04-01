@@ -2,18 +2,29 @@
 
 import numpy as np
 
-elastic_force = lambda dx, k: -k * dx
-centrifugal_force = lambda x, x0, k: k * (x - x0)
-
-
-denomin_gravit_force = lambda x, x0: ((x[0] - x0[0])**2 + (x[1] - x0[1])**2)**(3.0/2.0)
-gravitational_force = lambda x, x0, k: -k * (x - x0) / denomin_gravit_force(x, x0)
-
-x = np.array([5, 3])
+k = 0.5
 x0 = np.array([3, 2])
 
-print elastic_force(x0, 0.5)
-print centrifugal_force(x, x0, 0.5)
+denomin_gravit_force = lambda x: ((x[0] - x0[0])**2 + (x[1] - x0[1])**2)**(3.0/2.0)
 
-print denomin_gravit_force(x, x0)
-print gravitational_force(x, x0, 0.5)
+
+elastic_force = lambda dx: -k * dx
+centrifugal_force = lambda x: k * (x - x0)
+gravitational_force = lambda x: -k * (x - x0) / denomin_gravit_force(x)
+
+
+elastic_jacob = np.array([[- k, 0],
+                          [0, -k]])
+
+centrifugal_jacob = np.array([[k, 0],
+                              [0, k]])
+
+# TO DO
+gravitational_jacob = np.array([[0, 0],
+                                [0, 0]])
+
+x = np.array([5, 3])
+
+print elastic_force(x)
+print centrifugal_force(x)
+print gravitational_force(x)
