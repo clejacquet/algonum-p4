@@ -2,29 +2,40 @@
 
 import numpy as np
 
-k = 0.5
-x0 = np.array([3, 2])
+k1 = 1.0
+k2 = 0.01
+x0 = np.array([0,0])
+y0 = np.array([1,0])
 
-denomin_gravit_force = lambda x: ((x[0] - x0[0])**2 + (x[1] - x0[1])**2)**(3.0/2.0)
+
+
+denomin_gravit_force = lambda x,x0: ((x[0] - x0[0])**2 + (x[1] - x0[1])**2)**(3.0/2.0)
 
 
 elastic_force = lambda dx: -k * dx
-centrifugal_force = lambda x: k * (x - x0)
-gravitational_force = lambda x: -k * (x - x0) / denomin_gravit_force(x)
+centrifugal_force = lambda x,x0,k: k * (x - x0)
+gravitational_force = lambda x,x0,k: -k * (x - x0) / denomin_gravit_force(x,x0)
 
 
-elastic_jacob = np.array([[- k, 0],
+elastic_jacob = lambda k: np.array([[-k, 0],
                           [0, -k]])
 
-centrifugal_jacob = np.array([[k, 0],
+centrifugal_jacob =lambda k: np.array([[k, 0],
                               [0, k]])
 
-# TO DO
-gravitational_jacob = np.array([[0, 0],
-                                [0, 0]])
 
-x = np.array([5, 3])
+gravitational_jacob = lambda x,x0,k: np.array([[-k*(denomin_gravit_force(x,x0)-((x[0]-x0[0])**2)*3*((x[0] - x0[0])**2 + (x[1] - x0[1])**2)**(1.0/2.0))/(denomin_gravit_force(x,x0)**2) , -k*(-(x[0]-x0[0])*3*(x[1]-x0[1])*((x[0] - x0[0])**2 + (x[1] - x0[1])**2)**(1.0/2.0))/(denomin_gravit_force(x,x0)**2)],
+                                [-k*(-(x[1]-x0[1])*3*(x[0]-x0[0])*((x[0] - x0[0])**2 + (x[1] - x0[1])**2)**(1.0/2.0))/(denomin_gravit_force(x,x0)**2) , -k*(denomin_gravit_force(x,x0)-((x[1]-x0[1])**2)*3*((x[0] - x0[0])**2 + (x[1] - x0[1])**2)**(1.0/2.0))/(denomin_gravit_force(x,x0)**2)]])
 
-print elastic_force(x)
-print centrifugal_force(x)
-print gravitational_force(x)
+x = np.array([1.5, 0])
+
+
+
+#print elastic_force(x)
+
+#Presque les memes resultats que dans l'ennonce, je trouve pas l'erreur
+print centrifugal_force(x,x0,k1) + gravitational_force(x,x0,k1) + gravitational_force(x,y0,k2)
+print centrifugal_jacob(k1) + gravitational_jacob(x,x0,k1) + gravitational_force(x,y0,k2)
+
+
+
