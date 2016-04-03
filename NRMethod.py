@@ -1,9 +1,9 @@
 # coding: utf-8
 import numpy as np
 import time as tm
-## Newton-Raphson Method
 
-def Newton_Raphson(f,H,U0,N,epsilon):
+# Newton-Raphson Method
+def Newton_Raphson(f, H, U0, N, epsilon):
     U=U0
     V=np.linalg.lstsq(H(U),-f(U))[0] #function resolving Ax=B
     UplusV=U+V
@@ -14,6 +14,7 @@ def Newton_Raphson(f,H,U0,N,epsilon):
         UplusV=U+V
         i+=1
     return UplusV
+
 
 def Newton_BT(f,H,U0,N,epsilon):
     U=U0
@@ -65,8 +66,12 @@ def main():
     print("Solution we get :")
     print(functionUBT2)
 
-main()
     
 ## Faire tracé de l'erreur
 ## Faire test 1D de NR
 ## Faire Nexton Backtracking
+
+
+
+main()
+
