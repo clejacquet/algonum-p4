@@ -106,7 +106,7 @@ def main():
     #print("Solution we get :")
     #print(functionUBT2)
         
-    error_NR(lambda A: np.array([(A[0]**2)-2]),lambda A:  np.array([[2*A[0]]]),np.array([1]),100,m.sqrt(2),0.00000001,0.1,0.001)
+#    error_NR(lambda A: np.array([(A[0]**2)-2]),lambda A:  np.array([[2*A[0]]]),np.array([1]),100,m.sqrt(2),0.00000001,0.1,0.001)
 
 main()
 
