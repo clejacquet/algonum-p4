@@ -36,66 +36,34 @@ def Newton_BT(f,H,U0,N,epsilon):
     calculated through the Newton method with backtracking"""
     U=U0
     for i in range(1,N):
-#        print(i)
         Va=f(U)
         Na=np.linalg.norm(Va)
         if (Na<epsilon):
-#            print("Norme < epsilon")
             return U
         dV=H(U)
         dU=-1*np.linalg.lstsq(dV,Va)[0]
         lambd=1.0
-#        print("norme: ",(np.linalg.norm(f(U+lambd*dU))))
-#        print("Na: ",Na)
         while (np.linalg.norm(f(U+lambd*dU))>=Na):
             lambd=lambd*(2.0/3)
-#            print("LAMBDA: ",lambd)
         U=U+lambd*dU
     return U
 
 
-#curve representing the error on the zeros depending on the precision
-def error_NR(f,H,U0,N,real_zero,eps1,eps2,step):
+def error_NR_depending_on_N(f,H,U0,N1,N2,step,real_zero,eps):
+    """error_NR_depending_on_N prints the curve
+    representing Error on the calculated zeros depending on the max of iterations of
+    the NRMethod"""
+
     y=[]
-    if (int(float((eps2-eps1))/float(step))>=(float(eps2-eps1)/float(step))):
-        nb_point=int((eps2-eps1)/step)
-    else:
-        nb_point=int((eps2-eps1)/step)+1
-        
-    x=np.linspace(eps1,eps2,nb_point)
-
-    Nzero=np.linalg.norm(real_zero)
-
-    while(eps1<=eps2):
-        zero=Newton_Raphson(f,H,U0,N,eps1)
-        y.append(abs(Nzero-np.linalg.norm(zero)))        
-        eps1+=step
-    print(np.shape(x)[0])
-    print(np.shape(y)[0])
-    plt.plot(x,y)
-    plt.ylabel("Error from the NR Method")
-    plt.xlabel("Precision of the NR Method")
-    plt.title("Error on the calculated zeros depending on the precision of the NRMethod")
-    plt.show()
-
-def error_NR_depend_on_N(f,H,U0,N1,N2,step,real_zero,eps):
-    y=[]
- #   if (int(float((N2-N1))/float(step))>=(float((N2-N1))/float(step))):
     nb_point=int(float((N2-N1))/float(step))+1
-#    else:
-        #nb_point=int(float((N2-N1))/float(step))+1
-        
     x=np.linspace(N1,N2,nb_point)
 
-    Nzero=np.linalg.norm(real_zero)#norme de la racine exacte
+    Nzero=np.linalg.norm(real_zero)#exact zero norm
 
     while(N1<=N2):
         zero=Newton_Raphson(f,H,U0,N1,eps)
-        print(zero)
         y.append(abs(Nzero-np.linalg.norm(zero)))        
         N1+=step
-    print(np.shape(x)[0])
-    print(np.shape(y)[0])
     plt.plot(x,y)
     plt.ylabel("Error from the NR Method")
     plt.xlabel("Max of iterations of the NR Method")
@@ -104,47 +72,47 @@ def error_NR_depend_on_N(f,H,U0,N1,N2,step,real_zero,eps):
 
 
 def main():
-#    functionU2D=Newton_Raphson(lambda A: np.array([A[0]*A[0]-2,A[1]*A[1]-3]),lambda A:  np.array([[(2*A[0]), 0], [0, (2*A[1])]]),np.array([1, 1]),100,0.00000001)
+    functionU2D=Newton_Raphson(lambda A: np.array([A[0]*A[0]-2,A[1]*A[1]-3]),lambda A:  np.array([[(2*A[0]), 0], [0, (2*A[1])]]),np.array([1, 1]),100,0.00000001)
 
-    # print("TEST 1, USING f:(x,y)->(x²-2,y²-3)")
-    # print("Expected solution :")
-    # print("[~1.41421 ~1.73205]")
-    # print("")
-    # print("Solution we get :")
-    # print(functionU2D)
-
-#    functionU1D=Newton_Raphson(lambda A: np.array([(A[0]**2)-2]),lambda A:  np.array([[2*A[0]]]),np.array([1]),100,0.00000001)
-
-    #print("TEST 2, USING f:(x)->(x²-2)")
-    #print("Expected solution :")
-    #print("[~1.41421]")
-    #print("")
-    #print("Solution we get :")
-    #print(functionU1D)
+    print("TEST 1 NR, USING f:(x,y)->(x²-2,y²-3)")
+    print("Expected solution :")
+    print("[~1.41421 ~1.73205]")
+    print("Solution we get :")
+    print(functionU2D)
+    print("")
+    print("")
     
-#    functionUBT=Newton_BT(lambda A: np.array([A[0]*A[0]-2,A[1]*A[1]-A[1]-1]),lambda A:  np.array([[(2*A[0]), 0], [0, (2*A[1])-1]]),np.array([2,2]),100,0.000000000001)
+    functionU1D=Newton_Raphson(lambda A: np.array([(A[0]**2)-2]),lambda A:  np.array([[2*A[0]]]),np.array([1]),100,0.00000001)
 
-    # print("TEST 1 BT, USING f:(x,y)->(x²-2,y²-y-1)")
-    # print("Expected solution :")
-    # print("[~ ~]")
-    # print("")
-    # print("Solution we get :")
-    # print(functionUBT)
-    # 
-#    functionUBT2=Newton_BT(lambda A: np.array([(A[0]**4)-2*(A[0]**3)-(A[0]**2)+2*A[0]+0.3]),lambda A:  np.array([[4*(A[0]**3)-6*(A[0]**2)-2*A[0]+2]]),np.array([-0.55]),100,0.001) 
+    print("TEST 2 NR, USING f:(x)->(x²-2)")
+    print("Expected solution :")
+    print("[~1.41421]")
+    print("Solution we get :")
+    print(functionU1D)
+    print("")
+    print("")
 
-    #print("TEST 2 BT, USING f:(x,y)->X⁴-2X³-X²+2X+0.3")
-    #print("Expected solution :")
-    #print("[]")
-    #print("")
-    #print("Solution we get :")
-    #print(functionUBT2)
-        
-#    error_NR(lambda A: np.array([(A[0]**2)-9]),lambda A:  np.array([[2*A[0]]]),np.array([1]),10000,np.array([3]),0.00000001,0.1,0.00001)
+    functionUBT=Newton_BT(lambda A: np.array([A[0]*A[0]-2,A[1]*A[1]-A[1]-1]),lambda A:  np.array([[(2*A[0]), 0], [0, (2*A[1])-1]]),np.array([2,2]),100,0.000000000001)
 
-#    error_NR(lambda A: np.array([A[0]*A[0]-2,A[1]*A[1]-3]),lambda A:  np.array([[(2*A[0]), 0], [0, (2*A[1])]]),np.array([1, 1]),10000,np.array([m.sqrt(2),m.sqrt(3)]),0.00001,1,0.001)
+    print("TEST 1 BT, USING f:(x,y)->(x²-2,y²-y-1)")
+    print("Expected solution :")
+    print("[~1.41421 ~1.61803]")
+    print("Solution we get :")
+    print(functionUBT)
+    print("")
+    print("")
 
-    error_NR_depend_on_N(lambda A: np.array([(A[0]**2)-9]),lambda A:  np.array([[2*A[0]]]),np.array([1]),0,8,1,np.array([3]),0.000001)
+    functionUBT2=Newton_BT(lambda A: np.array([(A[0]**4)-2*(A[0]**3)-(A[0]**2)+2*A[0]+0.3]),lambda A:  np.array([[4*(A[0]**3)-6*(A[0]**2)-2*A[0]+2]]),np.array([-0.55]),100,0.001) 
+    
+    print("TEST 2 BT, USING f:(x,y)->X⁴-2X³-X²+2X+0.3")
+    print("Expected solution :")
+    print("[~ -0.142915]")
+    print("Solution we get :")
+    print(functionUBT2)
+    print("")
+    print("")
+    
+    error_NR_depending_on_N(lambda A: np.array([(A[0]**2)-9]),lambda A:  np.array([[2*A[0]]]),np.array([1]),0,8,1,np.array([3]),0.000001)
 
 main()
 
