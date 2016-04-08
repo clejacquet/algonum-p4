@@ -57,7 +57,7 @@ def Newton_BT(f,H,U0,N,epsilon):
 #curve representing the error on the zeros depending on the precision
 def error_NR(f,H,U0,N,real_zero,eps1,eps2,step):
     y=[]
-    if (int((eps2-eps1)/step)>=((eps2-eps1)/step)):
+    if (int(float((eps2-eps1))/float(step))>=(float(eps2-eps1)/float(step))):
         nb_point=int((eps2-eps1)/step)
     else:
         nb_point=int((eps2-eps1)/step)+1
@@ -77,6 +77,31 @@ def error_NR(f,H,U0,N,real_zero,eps1,eps2,step):
     plt.xlabel("Precision of the NR Method")
     plt.title("Error on the calculated zeros depending on the precision of the NRMethod")
     plt.show()
+
+def error_NR_depend_on_N(f,H,U0,N1,N2,step,real_zero,eps):
+    y=[]
+ #   if (int(float((N2-N1))/float(step))>=(float((N2-N1))/float(step))):
+    nb_point=int(float((N2-N1))/float(step))+1
+#    else:
+        #nb_point=int(float((N2-N1))/float(step))+1
+        
+    x=np.linspace(N1,N2,nb_point)
+
+    Nzero=np.linalg.norm(real_zero)#norme de la racine exacte
+
+    while(N1<=N2):
+        zero=Newton_Raphson(f,H,U0,N1,eps)
+        print(zero)
+        y.append(abs(Nzero-np.linalg.norm(zero)))        
+        N1+=step
+    print(np.shape(x)[0])
+    print(np.shape(y)[0])
+    plt.plot(x,y)
+    plt.ylabel("Error from the NR Method")
+    plt.xlabel("Max of iterations of the NR Method")
+    plt.title("Error on the calculated zeros depending on the max of iterations of the NRMethod")
+    plt.show()
+
 
 def main():
 #    functionU2D=Newton_Raphson(lambda A: np.array([A[0]*A[0]-2,A[1]*A[1]-3]),lambda A:  np.array([[(2*A[0]), 0], [0, (2*A[1])]]),np.array([1, 1]),100,0.00000001)
@@ -115,9 +140,11 @@ def main():
     #print("Solution we get :")
     #print(functionUBT2)
         
-    error_NR(lambda A: np.array([(A[0]**2)-9]),lambda A:  np.array([[2*A[0]]]),np.array([1]),10000,np.array([3]),0.00000001,0.1,0.00001)
+#    error_NR(lambda A: np.array([(A[0]**2)-9]),lambda A:  np.array([[2*A[0]]]),np.array([1]),10000,np.array([3]),0.00000001,0.1,0.00001)
 
 #    error_NR(lambda A: np.array([A[0]*A[0]-2,A[1]*A[1]-3]),lambda A:  np.array([[(2*A[0]), 0], [0, (2*A[1])]]),np.array([1, 1]),10000,np.array([m.sqrt(2),m.sqrt(3)]),0.00001,1,0.001)
+
+    error_NR_depend_on_N(lambda A: np.array([(A[0]**2)-9]),lambda A:  np.array([[2*A[0]]]),np.array([1]),0,8,1,np.array([3]),0.000001)
 
 main()
 
