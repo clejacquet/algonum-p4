@@ -4,6 +4,7 @@ import math as m
 import matplotlib.pyplot as plt
 import time as tm
 
+
 # Newton-Raphson Method
 def Newton_Raphson(f, H, U0, N, epsilon):
     """Newton_Raphson takes 5 arguments :
@@ -109,7 +110,7 @@ def error_NR_depending_on_N(f,H,U0,N1,N2,step,real_zero,eps):
     plt.show()
 
 
-def main():
+if __name__ == '__main__':
 
     print("SOME TESTS ON NR ALGORITHM:")
     print("")
@@ -214,5 +215,4 @@ def main():
 
     Newton_BT_error_curve(lambda A: np.array([(A[0]**3)+4*(A[0]**2)+4]),lambda A:  np.array([[3*(A[0]**2)+8*A[0]]]),np.array([5]),10,0.00001,np.array([-4.224169871088])) 
     print("... The zero is well calculated thank to the backtracking.")
-main()
 
