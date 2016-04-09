@@ -48,7 +48,45 @@ def Newton_BT(f,H,U0,N,epsilon):
         U=U+lambd*dU
     return U
 
+def Newton_BT_error_curve(f,H,U0,N,epsilon,realZero):
+    """Newton_BT_error_curves takes 6 arguments :
+    f: studied function (given as an array)
+    H: jacobian matrix of f
+    U0: start point
+    N: maximum of iterations
+    epsilon: precision
+    realZero: the real zero of f that we want to calculate 
+    The function prints the curve
+    representing Error on the calculated zeros depending on the number of done iterations,
+    calculated through the Newton method with backtracking"""
 
+    y=[]
+    nb_point=N-1
+    x=np.linspace(1,N,nb_point)
+
+    Nzero=np.linalg.norm(realZero)#exact zero norm
+
+    U=U0
+    for i in range(1,N):
+        Va=f(U)
+        Na=np.linalg.norm(Va)
+        if (Na<epsilon):
+            for j in range(i,N):
+                y.append(abs(Nzero-np.linalg.norm(U)))
+            break
+        dV=H(U)
+        dU=-1*np.linalg.lstsq(dV,Va)[0]
+        lambd=1.0
+        while (np.linalg.norm(f(U+lambd*dU))>=Na):
+            lambd=lambd*(2.0/3)
+        U=U+lambd*dU
+        y.append(abs(Nzero-np.linalg.norm(U)))
+    plt.plot(x,y)
+    plt.ylabel("Error from the NR with backtracking method")
+    plt.xlabel("Number of iterations of the NR with backtracking Method")
+    plt.title("Error on the calculated zeros depending on the max of iterations of the NR with backtracking method")
+    plt.show()
+        
 def error_NR_depending_on_N(f,H,U0,N1,N2,step,real_zero,eps):
     """error_NR_depending_on_N prints the curve
     representing Error on the calculated zeros depending on the max of iterations of
@@ -171,6 +209,10 @@ def main():
     error_NR_depending_on_N(lambda A: np.array([(A[0]**3)+4*(A[0]**2)+4]),lambda A:  np.array([[3*(A[0]**2)+8*A[0]]]),np.array([5]),0,15,1,np.array([-4.224169871088]),0.000001)
     print("... Obviously, it diverges.")
 
+    print("")
+    print("(/!\ backtracking)CURVE ON THE EXAMPLE f : x -> (x³+4*x²+4), WITH START POINT 5, 15 ITERATIONS OF THE NR WITH BACKTRACKING METHOD : ...")
 
+    Newton_BT_error_curve(lambda A: np.array([(A[0]**3)+4*(A[0]**2)+4]),lambda A:  np.array([[3*(A[0]**2)+8*A[0]]]),np.array([5]),10,0.00001,np.array([-4.224169871088])) 
+    print("... The zero is well calculated thank to the backtracking.")
 main()
 
