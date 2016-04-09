@@ -72,9 +72,14 @@ def error_NR_depending_on_N(f,H,U0,N1,N2,step,real_zero,eps):
 
 
 def main():
-    functionU2D=Newton_Raphson(lambda A: np.array([A[0]*A[0]-2,A[1]*A[1]-3]),lambda A:  np.array([[(2*A[0]), 0], [0, (2*A[1])]]),np.array([1, 1]),100,0.00000001)
+
+    print("SOME TESTS ON NR ALGORITHM:")
+    print("")
+    
+    functionU2D=Newton_Raphson(lambda A: np.array([A[0]*A[0]-2,A[1]*A[1]-3]),lambda A:  np.array([[(2*A[0]), 0], [0, (2*A[1])]]),np.array([1, 1]),100,0.00000001) 
 
     print("TEST 1 NR, USING f:(x,y)->(x²-2,y²-3)")
+    print("U0: (1,1)")
     print("Expected solution :")
     print("[~1.41421 ~1.73205]")
     print("Solution we get :")
@@ -85,6 +90,7 @@ def main():
     functionU1D=Newton_Raphson(lambda A: np.array([(A[0]**2)-2]),lambda A:  np.array([[2*A[0]]]),np.array([1]),100,0.00000001)
 
     print("TEST 2 NR, USING f:(x)->(x²-2)")
+    print("U0: 1")
     print("Expected solution :")
     print("[~1.41421]")
     print("Solution we get :")
@@ -92,9 +98,47 @@ def main():
     print("")
     print("")
 
+    print("TESTS ON (x³+4*x²+4), SHOWING NR PROBLEMS AND NR BACKTRACKING WINS :")
+    print("")
+
+    functionU1Dbis=Newton_Raphson(lambda A: np.array([(A[0]**3)+4*(A[0]**2)+4]),lambda A:  np.array([[3*(A[0]**2)+8*A[0]]]),np.array([-5]),100,0.00000001)
+
+    print("TEST 2 NR, USING f:(x)->(x³+4*x²+4)")
+    print("U0: -5 ")
+    print("Expected solution :")
+    print("[~-4.22417]")
+    print("Solution we get :")
+    print(functionU1Dbis)
+    print("")
+    print("")    
+    functionU1Dter=Newton_Raphson(lambda A: np.array([(A[0]**3)+4*(A[0]**2)+4]),lambda A:  np.array([[3*(A[0]**2)+8*A[0]]]),np.array([5]),100,0.00000001)
+
+    print("TEST 3 NR, USING f:(x)->(x³+4*x²+4)")
+    print("U0: 5 ")
+    print("Expected solution :")
+    print("[~-4.22417]")
+    print("Solution we get :")
+    print(functionU1Dter)
+    print("-> The method fails to find the zero, because of the local extremums located between 5 and -4.22[...].")
+    print("")    
+
+    functionUBT1=Newton_BT(lambda A: np.array([(A[0]**3)+4*(A[0]**2)+4]),lambda A:  np.array([[3*(A[0]**2)+8*A[0]]]),np.array([5]),100,0.00000001)
+
+    print("TEST 1 BT, USING f:(x)->(x³+4*x²+4)")
+    print("U0: 5 ")
+    print("Expected solution :")
+    print("[~-4.22417]")
+    print("Solution we get :")
+    print(functionUBT1)
+    print("-> The method NR with backtracking can solve what NR actually can't.")
+    print("")    
+
+    print("OTHER TESTS OF NEWTON WITH BACKTRACKING:")
+    print("")
     functionUBT=Newton_BT(lambda A: np.array([A[0]*A[0]-2,A[1]*A[1]-A[1]-1]),lambda A:  np.array([[(2*A[0]), 0], [0, (2*A[1])-1]]),np.array([2,2]),100,0.000000000001)
 
-    print("TEST 1 BT, USING f:(x,y)->(x²-2,y²-y-1)")
+    print("TEST 2 BT, USING f:(x,y)->(x²-2,y²-y-1)")
+    print("U0: (2,2)")
     print("Expected solution :")
     print("[~1.41421 ~1.61803]")
     print("Solution we get :")
@@ -102,17 +146,31 @@ def main():
     print("")
     print("")
 
-    functionUBT2=Newton_BT(lambda A: np.array([(A[0]**4)-2*(A[0]**3)-(A[0]**2)+2*A[0]+0.3]),lambda A:  np.array([[4*(A[0]**3)-6*(A[0]**2)-2*A[0]+2]]),np.array([-0.55]),100,0.001) 
+    functionUBT3=Newton_BT(lambda A: np.array([(A[0]**4)-2*(A[0]**3)-(A[0]**2)+2*A[0]+0.3]),lambda A:  np.array([[4*(A[0]**3)-6*(A[0]**2)-2*A[0]+2]]),np.array([-0.55]),100,0.001) 
     
-    print("TEST 2 BT, USING f:(x,y)->X⁴-2X³-X²+2X+0.3")
+    print("TEST 3 BT, USING f:(X)->X^4-2X³-X²+2X+0.3")
+    print("This test efficiently decreases the value lambda.")
+    print("U0: -0.55")
     print("Expected solution :")
     print("[~ -0.142915]")
     print("Solution we get :")
-    print(functionUBT2)
+    print(functionUBT3)
     print("")
     print("")
-    
-    error_NR_depending_on_N(lambda A: np.array([(A[0]**2)-9]),lambda A:  np.array([[2*A[0]]]),np.array([1]),0,8,1,np.array([3]),0.000001)
+
+    print("Curves from the NR method :")
+    print("CURVE ON THE EXAMPLE f : x -> (x³+4*x²+4), WITH START POINT -500, MAX OF 15 ITERATIONS ...")
+    error_NR_depending_on_N(lambda A: np.array([(A[0]**3)+4*(A[0]**2)+4]),lambda A:  np.array([[3*(A[0]**2)+8*A[0]]]),np.array([-500]),0,15,1,np.array([-4.224169871088]),0.000001)
+    print("... It converges.")
+    print("")
+    print("CURVE ON THE EXAMPLE f : x -> (x³+4*x²+4), WITH START POINT 50, MAX OF 15 ITERATIONS : ...")
+    error_NR_depending_on_N(lambda A: np.array([(A[0]**3)+4*(A[0]**2)+4]),lambda A:  np.array([[3*(A[0]**2)+8*A[0]]]),np.array([50]),0,15,1,np.array([-4.224169871088]),0.000001)
+    print("... It converges after a few fluctuations.")
+    print("")
+    print("CURVE ON THE EXAMPLE f : x -> (x³+4*x²+4), WITH START POINT 5, MAX OF 15 ITERATIONS : ...")
+    error_NR_depending_on_N(lambda A: np.array([(A[0]**3)+4*(A[0]**2)+4]),lambda A:  np.array([[3*(A[0]**2)+8*A[0]]]),np.array([5]),0,15,1,np.array([-4.224169871088]),0.000001)
+    print("... Obviously, it diverges.")
+
 
 main()
 
