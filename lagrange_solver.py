@@ -2,6 +2,7 @@
 
 import numpy as np
 import NRMethod as nr
+import forces as f
 import matplotlib.pyplot as plt
 
 
@@ -24,24 +25,35 @@ class LagrangeSolver:
         return solutions
 
     def show_solutions(self, window, step_count, n_max, eps):
-        x = []
-        y = []
-        colors = []
+        force_types = {}
+        for name, force in f.FORCE_LIST.iteritems():
+            force_types[name] = {
+                'x': [],
+                'y': [],
+                'color': force.color
+            }
 
         for force in self.model.forces:
-            x.append(force[1][0])
-            y.append(force[1][1])
-            colors.append(force[0].color)
+            force_types[force[0].name]['x'].append(force[1][0])
+            force_types[force[0].name]['y'].append(force[1][1])
 
-        solutions = self.solve(window, step_count, n_max, eps)
+        ax = plt.subplot(111)
+        scatters = {}
+        for name, force_type in force_types.iteritems():
+            scatters[name] = ax.scatter(force_type['x'], force_type['y'], color=force_type['color'])
 
-        for solution in solutions:
-            x.append(solution[0])
-            y.append(solution[1])
-            colors.append('grey')
+        solutions = np.array(self.solve(window, step_count, n_max, eps))
 
-        plt.scatter(x, y, color=colors)
-        plt.title('Nuage de points avec Matplotlib')
+        scatters['solutions'] = ax.scatter(solutions[:, 0], solutions[:, 1], color='grey', marker='x')
+
+        plt.legend(scatters.values(),
+           scatters.keys(),
+           scatterpoints=1,
+           loc='lower left',
+           ncol=1,
+           fontsize=12)
+
+        plt.title('Equilibrium points')
         plt.xlabel('x')
         plt.ylabel('y')
         plt.show()
