@@ -44,7 +44,9 @@ class ForceEquilibriumSolver:
 
         solutions = np.array(self.solve(window, step_count, n_max, eps))
 
-        scatters['solutions'] = ax.scatter(solutions[:, 0], solutions[:, 1], color='grey', marker='x')
+        scatters['solutions'] = ax.scatter(solutions[:, 0], solutions[:, 1], color='black', marker='x')
+
+        print solutions
 
         plt.legend(scatters.values(),
            scatters.keys(),
