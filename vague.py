@@ -53,9 +53,9 @@ def H_G(X):
     DELTA_x = float(2*L)/(n-1)
     for i in range(n):
         H[i][(i-2)%n] = - float(epsilon) / (12 * (DELTA_x**3))
-        H[i][(i-1)%n] = - (2. - float(epsilon) * (X[i][0] + 2*X[(i-1)%n])) / (4 * DELTA_x) + 2. * (float(epsilon)/(12*(DELTA_x**3)))
+        H[i][(i-1)%n] = (-2. - float(epsilon) * (X[i][0] + 2*X[(i-1)%n][0])) / (4 * DELTA_x) + 2. * (float(epsilon)/(12*(DELTA_x**3)))
         H[i][i] = (epsilon * (X[(i+1)%n][0] - X[(i-1)%n][0])) / (4 *DELTA_x)
-        H[i][(i+1)%n] = (2. + float(epsilon) * (X[i][0] + 2*X[(i+1)%n])) / (4 * DELTA_x) - 2. * (float(epsilon)/(12*(DELTA_x**3)))
+        H[i][(i+1)%n] = (2. + float(epsilon) * (X[i][0] + 2*X[(i+1)%n][0])) / (4 * DELTA_x) - 2. * (float(epsilon)/(12*(DELTA_x**3)))
         H[i][(i+2)%n] = float(epsilon) / (12 * (DELTA_x)**3)    
     return H
 
