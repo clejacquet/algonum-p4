@@ -6,7 +6,7 @@ import forces as f
 import matplotlib.pyplot as plt
 
 
-class LagrangeSolver:
+class ForceEquilibriumSolver:
     def __init__(self, model):
         self.model = model
 
