@@ -20,9 +20,7 @@ def ComputeU0():
     """Function COmputeu0 computes U0 (vector of size n) on the interval [-L,L]. Init cond: zheta(x,0) = exp(-alpha*x^2) """
     zheta = lambda x, alpha : np.exp(-alpha*(x**2))
     U0 = np.zeros([n,1])
-    print(U0)
     for i in range(n):
-        print(zheta((float(2*i-n+1)/(n-1))*L,alpha))
         U0[i][0] = zheta((float(2*i-n+1)/(n-1))*L,alpha)
     return U0
 
@@ -74,13 +72,20 @@ def H_wave (previous_U):
 def main():
     letsdisplay = plt.figure()
     plan = plt.axes(xlim=(-L,L), ylim=(-0.4,1.2))
-    curve = plan.plot([], [])
-    #U = ComputeU0()
-    #Draw(ComputeU0())
+
+    U = ComputeU0()
+    print("Affichage de U^0")
+    Draw(ComputeU0())
+
+    U = ComputeU0()
+    print("Calcul du 15eme etat... et affichage.")
+    for j in range (16):
+        U=Newton_BT(Equ_wave(U), H_wave(U), U, 20, 0.0001)
+    Draw(U)
     
     U = ComputeU0()
-    print("Calcul du 30eme etat :")
-    for j in range (30):
+    print("Calcul du 30eme etat... et affichage.")
+    for j in range (31):
         U=Newton_BT(Equ_wave(U), H_wave(U), U, 20, 0.0001)
     Draw(U)
 
