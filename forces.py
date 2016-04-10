@@ -43,6 +43,10 @@ def gravitational_jacob(x, x0, k):
 
 
 class Force:
+    """
+    Represents a force, by its function and its jacobian function
+    """
+
     f = None
     df = None
     name = None
@@ -55,6 +59,7 @@ class Force:
         self.color = color
 
 
+""" A list of every types of force which are handled """
 FORCE_LIST = {
     'elastic':       Force(elastic_force,       elastic_jacob,       'elastic',       'blue'),
     'centrifugal':   Force(centrifugal_force,   centrifugal_jacob,   'centrifugal',   'green'),

@@ -5,31 +5,27 @@ import numpy as np
 
 class ForceModel:
     """
-
+    Represents a model with some forces
     """
+
     forces = None
 
     def __init__(self):
-        """
-
-        :return:
-        """
         self.forces = []
 
     def add_force(self, force, origin, k):
         """
-
-        :param force:
-        :param origin:
-        :param k:
-        :return:
+        Add a force to the model
+        :param force: a force type
+        :param origin: its origin point
+        :param k: its coefficient value
         """
         self.forces.append([force, origin, k])
 
     def compute_total_force(self):
         """
-
-        :return:
+        Compute the total function force
+        :return: total function force
         """
         def f(vec):
             total = np.array([0., 0.])
@@ -45,8 +41,8 @@ class ForceModel:
 
     def compute_total_jacobian(self):
         """
-
-        :return:
+        Compute the total jacobian force
+        :return: total jacobian force
         """
         def df(vec):
             total = np.array([[0., 0.],

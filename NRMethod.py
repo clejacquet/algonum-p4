@@ -25,6 +25,7 @@ def Newton_Raphson(f, H, U0, N, epsilon):
         i+=1
     return UplusV
 
+
 # Newton Method with Backtracking
 def Newton_BT(f,H,U0,N,epsilon):
     """Newton_BT takes 5 arguments :
@@ -48,6 +49,7 @@ def Newton_BT(f,H,U0,N,epsilon):
             lambd=lambd*(2.0/3)
         U=U+lambd*dU
     return U
+
 
 def Newton_BT_error_curve(f,H,U0,N,epsilon,realZero):
     """Newton_BT_error_curves takes 6 arguments :
@@ -87,7 +89,8 @@ def Newton_BT_error_curve(f,H,U0,N,epsilon,realZero):
     plt.xlabel("Number of iterations of the NR with backtracking Method")
     plt.title("Error on the calculated zeros depending on the max of iterations of the NR with backtracking method")
     plt.show()
-        
+
+
 def error_NR_depending_on_N(f,H,U0,N1,N2,step,real_zero,eps):
     """error_NR_depending_on_N prints the curve
     representing Error on the calculated zeros depending on the max of iterations of

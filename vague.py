@@ -96,7 +96,8 @@ def main():
         U=Newton_BT(Equ_wave(U), H_wave(U), U, 20, 0.0001)
     Draw(U)
 
-main()
+if __name__ == '__main__':
+    main()
         
     
 

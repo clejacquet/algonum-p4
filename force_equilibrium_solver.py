@@ -7,10 +7,26 @@ import matplotlib.pyplot as plt
 
 
 class ForceEquilibriumSolver:
+    """
+    Solver which find equilibrium points of a given model force
+    """
+
     def __init__(self, model):
+        """
+        Initialize the solver
+        :param model: a model force
+        """
         self.model = model
 
     def solve(self, window, step_count, n_max, eps):
+        """
+        Calculate the equilibrium points of the given model force
+        :param window: window of the values passed to Raphson-Newton method
+        :param step_count: steps between every value
+        :param n_max: limit of iteration for Raphson-Newton
+        :param eps: accepted minimal error rate for Raphson-Newton
+        :return: the equilibrium points
+        """
         f = self.model.compute_total_force()
         df = self.model.compute_total_jacobian()
 
@@ -25,6 +41,15 @@ class ForceEquilibriumSolver:
         return solutions
 
     def show_solutions(self, window, step_count, n_max, eps):
+        """
+        Display a plot of the forces and the equilibrium points
+        :param window: refer to 'solve' method
+        :param step_count: refer to 'solve' method
+        :param n_max: refer to 'solve' method
+        :param eps: refer to 'solve' method
+        :return:
+        """
+
         force_types = {}
         for name, force in f.FORCE_LIST.iteritems():
             force_types[name] = {
