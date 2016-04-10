@@ -214,5 +214,5 @@ def main():
 
     Newton_BT_error_curve(lambda A: np.array([(A[0]**3)+4*(A[0]**2)+4]),lambda A:  np.array([[3*(A[0]**2)+8*A[0]]]),np.array([5]),10,0.00001,np.array([-4.224169871088])) 
     print("... The zero is well calculated thank to the backtracking.")
-main()
+#main()
 
