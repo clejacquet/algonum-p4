@@ -1,8 +1,6 @@
 import numpy as np
-import numpy.linalg as nplg
 import matplotlib.pyplot as plt
 from NRMethod import Newton_BT
-# PARTIE VAGUE
 
 # VAR GLOBALES :
 global n
